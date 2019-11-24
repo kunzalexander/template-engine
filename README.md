@@ -4,4 +4,4 @@ Eingene Template Engine um Variablen, Include und Kommentartags aus Templates zu
 
 ### Built with
 
-Derzeit nur unter nutzung von [PHP](https://php.com)
+Derzeit nur unter nutzung von [PHP](https://www.php.net)
