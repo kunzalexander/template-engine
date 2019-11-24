@@ -29,9 +29,11 @@ $obj->assign($replace, $replacement);
 
 Private Funktion parseFunctions() wird von load($file) aufgerufen.
 Die Funktion fügt weitere Templates hinzu, die von der geladenen Template benötigt werden.
-Ebenso entfernt diese Funktion alle Templatekommentare, in Form von {* kommetar \*}, aus den Templates.
-[![Vorher](https://github.com/kunzalexander/img/blob/master/vorher.png)]
-[![Nachher](https://github.com/kunzalexander/img/blob/master/nachher.png)]
+Ebenso entfernt diese Funktion alle Templatekommentare,
+in Form von {* kommetar \*}, aus den Templates.
+![Vorher](https://github.com/kunzalexander/img/blob/master/vorher.png)
+![Nachher](https://github.com/kunzalexander/img/blob/master/nachher.png)
+
 
 Um die fertige Template abschließend auszugeben wird die Funktion display() genutzt.
 Bsp.:
