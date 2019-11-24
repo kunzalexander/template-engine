@@ -38,11 +38,12 @@
        $this->parseFunctions();
     }
 
-    public function assign($replace, $replacement){
+    public function assign($replaceArr){
       //Suchen der Variablentags und mit Inhalt ersetzen
-      // TODO: nutzung von arrays ermöglichen
-      $this->template = str_replace($this->leftDelimiter.$replace.$this->rightDelimiter,
-        $replacement, $this->template);
+      foreach ($replaceArr as $tag => $content) {
+        $this->template = str_replace($this->leftDelimiter.$tag.$this->rightDelimiter,
+          $content, $this->template);
+      }
 
     }
     //Suche von Templatetags in der Form: {name.extension}. Anschließend mit Inhalt ausfüllen.
