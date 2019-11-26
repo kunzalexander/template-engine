@@ -19,12 +19,16 @@ $file = "name.ext";
 $obj->load($file);
 ```
 
-Um in der geladenen Template die Tags zu ersetzen wird die Funktion assign($replace, $replacement) genutzt
+Um in der geladenen Template die Tags zu ersetzen wird die Funktion assign($replaceArr) genutzt
 Bsp.:
 ```
-$replace = "tag_name";
-$replacement = "content";
-$obj->assign($replace, $replacement);
+$replace = [
+  "tag_name" => "content",
+  "tag_name2" => "content2",
+  ....
+  "tag_nameN" => "contentN"
+];
+$obj->assign($replaceArr);
 ```
 
 Private Funktion parseFunctions() wird von load($file) aufgerufen.
