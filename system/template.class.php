@@ -35,7 +35,7 @@
       } else {
          return false;
       }
-       $this->parseFunctions();
+       $this->__parseFunctions();
     }
 
     public function assign($replaceArr){
@@ -47,7 +47,7 @@
 
     }
     //Suche von Templatetags in der Form: {name.extension}. Anschließend mit Inhalt ausfüllen.
-    private function parseFunctions(){
+    private function __parseFunctions(){
       while( preg_match( "/" .$this->leftDelimiterF ."(.*)\.(.*)"
                          .$this->rightDelimiterF."/", $this->template, $includes, PREG_OFFSET_CAPTURE) )
       {
