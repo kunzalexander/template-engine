@@ -13,6 +13,8 @@
     private $rightDelimiterF = "}";
     private $leftDelimiterC = '{\*';
     private $rightDelimiterC = '\*}';
+    private $leftForeach = "{FOREACH";
+    private $rightForeach = "}";
 
     //Möglichkeit einen alternativen Templatepfad festzulegen.
     public function __construct($tplDir=""){
@@ -21,7 +23,7 @@
       }
     }
 
-    public function load($file){
+    public function load($file, $sections){
       $this->templateName = $file;
       $this->templateFile = $this->templateDir.$file;
 
@@ -35,7 +37,8 @@
       } else {
          return false;
       }
-       $this->__parseFunctions();
+       $this->__parseForeach($sections);
+       $this->__parseIncludes();
     }
 
     public function assign($replaceArr){
@@ -46,11 +49,31 @@
       }
 
     }
-    //Suche von Templatetags in der Form: {name.extension}. Anschließend mit Inhalt ausfüllen.
-    private function __parseFunctions(){
+    private function __parseForeach($sections=""){
+        while( preg_match( "/" . $this->leftForeach . "(.*)\.(.*)". $this->rightForeach . "/", $this->template, $includes, PREG_OFFSET_CAPTURE)){
+            $replacementName = $includes[1][0].'.'.$includes[2][0];
+
+
+          if(file_exists($this->templateDir.$replacementName)){
+            foreach ($sections as $name) {
+              $content = $this->leftDelimiterF . $name . "." . $includes[2][0] . $this->rightDelimiterF;
+              $replacement .= file_get_contents($this->templateDir.$replacementName);
+              $replacement = str_replace($this->leftDelimiter."content".$this->rightDelimiter,
+                $content, $replacement);
+            }
+          }
+          else{
+            $this->template = "TemplateError: ".$replacementName;
+            break;
+          }
+          $this->template = preg_replace( "/" .$this->leftForeach .$replacementName
+            .$this->rightForeach."/", $replacement, $this->template );
+      }
+    }
+    private function __parseIncludes(){
+
       while( preg_match( "/" .$this->leftDelimiterF ."(.*)\.(.*)"
-                         .$this->rightDelimiterF."/", $this->template, $includes, PREG_OFFSET_CAPTURE) )
-      {
+        .$this->rightDelimiterF."/", $this->template, $includes, PREG_OFFSET_CAPTURE) ){
         //zwischenspeicher des Namens der Template
         $replacementName = $includes[1][0].'.'.$includes[2][0];
         //Überprüfung ob die Template existiert, falls ja, einlesen als String und Tag mit Inhalt ersetzen
@@ -64,7 +87,8 @@
           break;
         }
       }
-      //Entfernung aller Kommentare im Template mit dem {* .. *} Tag
+    }
+    private function __parseComments(){
       $this->template = preg_replace( "/" .$this->leftDelimiterC ."(.*)" .$this->rightDelimiterC ."/",
                                     "", $this->template );
     }
